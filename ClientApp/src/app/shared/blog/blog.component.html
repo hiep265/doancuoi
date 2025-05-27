@@ -1,0 +1,114 @@
+<section class="sec-blog bg0 p-t-60 p-b-90">
+    <div class="container">
+        <div class="p-b-40">
+            <h3 class="ltext-103 cl5 text-center">
+                BÀI VIẾT NỔI BẬT
+            </h3>
+            <div class="section-divider mx-auto mb-4"></div>
+        </div>
+        
+        <!-- Hiển thị bài viết nổi bật -->
+        <div class="row featured-posts">
+            <div class="col-md-6 p-b-30" *ngFor="let blog of featuredPosts | slice:0:2; let i = index" [@fadeIn]="i">
+                <div class="blog-item featured">
+                    <div class="blog-img-container featured-img">
+                        <a [routerLink]="['/blog/detail', blog.id]">
+                            <img [src]="blog.image" (error)="handleImageError($event)" 
+                                 (load)="onImageLoad($event)"
+                                 [alt]="blog.title" class="blog-img">
+                            <div class="blog-date">
+                                <span class="date-day">{{blog.date | date:'dd'}}</span>
+                                <span class="date-month">{{blog.date | date:'MMM'}}</span>
+                            </div>
+                            <div class="featured-label">Nổi bật</div>
+                        </a>
+                    </div>
+                    
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-author">
+                                <i class="zmdi zmdi-account"></i> {{blog.author}}
+                            </span>
+                            <span class="blog-category">
+                                <i class="zmdi zmdi-label"></i> {{blog.category}}
+                            </span>
+                        </div>
+                        
+                        <h4 class="blog-title">
+                            <a [routerLink]="['/blog/detail', blog.id]">
+                                {{blog.title}}
+                            </a>
+                        </h4>
+                        
+                        <p class="blog-desc">
+                            {{blog.description}}
+                        </p>
+                        
+                        <a [routerLink]="['/blog/detail', blog.id]" class="read-more">
+                            Đọc tiếp <i class="zmdi zmdi-long-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4 class="section-subtitle">BÀI VIẾT MỚI NHẤT</h4>
+            </div>
+        </div>
+        
+        <!-- Bài viết thông thường -->
+        <div class="row regular-posts">
+            <div class="col-sm-6 col-md-4 p-b-40" *ngFor="let blog of blogPosts | slice:0:3; let i = index" [@fadeIn]="i">
+                <div class="blog-item">
+                    <div class="blog-img-container">
+                        <a [routerLink]="['/blog/detail', blog.id]">
+                            <img [src]="blog.image" (error)="handleImageError($event)" 
+                                 (load)="onImageLoad($event)"
+                                 [alt]="blog.title" class="blog-img">
+                            <div class="blog-date">
+                                <span class="date-day">{{blog.date | date:'dd'}}</span>
+                                <span class="date-month">{{blog.date | date:'MMM'}}</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="blog-content">
+                        <h4 class="blog-title">
+                            <a [routerLink]="['/blog/detail', blog.id]">
+                                {{blog.title}}
+                            </a>
+                        </h4>
+                        
+                        <div class="blog-meta small">
+                            <span class="blog-category">
+                                <i class="zmdi zmdi-label"></i> {{blog.category}}
+                            </span>
+                        </div>
+                        
+                        <a [routerLink]="['/blog/detail', blog.id]" class="read-more mt-2">
+                            Đọc tiếp <i class="zmdi zmdi-long-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No posts message -->
+            <div class="col-12 text-center p-5" *ngIf="blogPosts.length === 0">
+                <div class="empty-state">
+                    <i class="zmdi zmdi-folder-outline empty-icon"></i>
+                    <h4>Không có bài viết nào</h4>
+                    <p>Hiện tại chưa có bài viết nào trong danh mục này.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Xem thêm button -->
+        <div class="text-center mt-4">
+            <a [routerLink]="['/blog']" class="view-all-btn">
+                Xem tất cả bài viết <i class="zmdi zmdi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>

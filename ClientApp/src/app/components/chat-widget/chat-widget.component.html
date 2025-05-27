@@ -1,0 +1,53 @@
+<div class="chat-container" [ngClass]="{'minimized': isMinimized}">
+  <!-- Chat icon khi đã thu nhỏ -->
+  <div class="chat-icon" *ngIf="isMinimized" (click)="toggleChat()">
+    <i class="fa fa-comments"></i>
+  </div>
+
+  <!-- Chat box khi đang mở -->
+  <div class="chat-box" *ngIf="!isMinimized">
+    <div class="chat-header">
+      <div class="title">Hỗ trợ trực tuyến</div>
+      <div class="actions">
+        <button class="minimize-btn" (click)="toggleChat()">
+          <i class="fa fa-minus"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="chat-body">
+      <!-- Thông báo khi chưa đăng nhập -->
+      <div *ngIf="!isLoggedIn && messages.length === 0" class="login-notice">
+        <p>Bạn chưa đăng nhập. Trò chuyện của bạn sẽ không được lưu lại.</p>
+        <a routerLink="/login" class="login-link">Đăng nhập</a>
+      </div>
+      
+      <div class="messages-container" #scrollContainer>
+        <div *ngFor="let message of messages" class="message" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+          <div class="message-content">
+            {{ message.content }}
+          </div>
+          <div class="message-time" *ngIf="message.timestamp">
+            {{ message.timestamp | date:'shortTime' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chat-footer">
+      <form (ngSubmit)="sendMessage()" #chatForm="ngForm">
+        <input 
+          type="text" 
+          [(ngModel)]="newMessage" 
+          name="message" 
+          placeholder="Nhập tin nhắn..."
+          [disabled]="isLoading"
+          required
+          autocomplete="off">
+        <button type="submit" [disabled]="!newMessage.trim() || isLoading">
+          <i class="fa fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

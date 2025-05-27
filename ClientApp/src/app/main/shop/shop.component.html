@@ -1,0 +1,78 @@
+<!-- Breadcrumb -->
+<div class="container">
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <a routerLink="/" class="stext-109 cl8 hov-cl1 trans-04">
+            Trang chủ
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+        <a routerLink="/shop" class="stext-109 cl8 hov-cl1 trans-04">
+            Cửa hàng
+            <i *ngIf="categoryId" class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+        <span *ngIf="categoryId" class="stext-109 cl4">
+            {{ categoryName }}
+        </span>
+    </div>
+</div>
+
+<!-- Category Title -->
+<div class="container" *ngIf="categoryId">
+    <div class="p-b-10 p-t-30">
+        <h3 class="ltext-103 cl5">
+            {{ categoryName }}
+        </h3>
+    </div>
+</div>
+
+<!-- Loading indicator -->
+<div class="container text-center p-t-30 p-b-30" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Đang tải...</span>
+    </div>
+</div>
+
+<!-- Products by Category -->
+<section class="bg0 p-t-23 p-b-140" *ngIf="!loading && products.length > 0">
+    <div class="container">
+        <div class="row isotope-grid">
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" *ngFor="let product of products">
+                <div class="block2">
+                    <div class="block2-pic hov-img0">
+                        <img 
+                            [src]="product.image ? 'https://localhost:5001/Images/list-image-product/' + product.image : 'assets/images/product-01.jpg'" 
+                            alt="{{product.ten}}"
+                            appImgFallback="assets/images/product-01.jpg"
+                        >
+                        
+                        <a [routerLink]="['/product', product.id]" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+                            Xem nhanh
+                        </a>
+                    </div>
+
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l">
+                            <a [routerLink]="['/product', product.id]" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                {{product.ten}}
+                            </a>
+
+                            <span class="stext-105 cl3">
+                                {{product.giaBan | currency:'VND':'symbol':'1.0-0'}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- No products found -->
+<div class="container text-center p-t-50 p-b-50" *ngIf="!loading && products.length === 0">
+    <h4 class="mtext-105 cl2">Không tìm thấy sản phẩm nào trong danh mục này</h4>
+    <p class="stext-113 cl6 p-t-15">Vui lòng quay lại sau hoặc chọn danh mục khác.</p>
+    <a routerLink="/shop" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-30 m-auto" style="max-width: 200px;">
+        Xem tất cả sản phẩm
+    </a>
+</div>
+
+<app-product *ngIf="!categoryId"></app-product>

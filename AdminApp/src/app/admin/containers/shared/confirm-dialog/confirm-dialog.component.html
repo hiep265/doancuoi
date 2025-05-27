@@ -1,0 +1,27 @@
+<div class="confirm-dialog-container">
+  <h2 mat-dialog-title>{{ title }}</h2>
+  
+  <mat-dialog-content>
+    <p>{{ message }}</p>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="onCancel()">{{ cancelButtonText }}</button>
+    <button mat-raised-button color="warn" (click)="onConfirm()">{{ confirmButtonText }}</button>
+  </mat-dialog-actions>
+</div>
+
+<style>
+  .confirm-dialog-container {
+    min-width: 300px;
+    padding: 10px;
+  }
+  
+  .mat-dialog-actions {
+    margin-bottom: 0;
+  }
+
+  button {
+    margin-left: 8px;
+  }
+</style> 

@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "mssql": {
+      "command": "python",
+      "args": [
+        "C:/Users/ADMIN/Desktop/abc/py-mcp-mssql/src/mssql/server.py"
+      ],
+      "env": {
+        "MSSQL_SERVER": "(local)\\MSSQLSERVER",
+        "MSSQL_DATABASE": "EFashionShop",
+        "MSSQL_USER": "sa",
+        "MSSQL_PASSWORD": "root",
+        "MSSQL_DRIVER": "{ODBC Driver 17 for SQL Server}",
+        "MSSQL_TRUST_SERVER_CERTIFICATE": "yes",
+        "MSSQL_ENCRYPT": "no",
+        "PYTHONPATH": "C:/Users/ADMIN/Desktop/abc/py-mcp-mssql"
+      }
+    }
+  }
+} 

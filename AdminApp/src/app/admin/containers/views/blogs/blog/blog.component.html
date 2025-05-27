@@ -1,0 +1,149 @@
+<form [formGroup]="newFormGroup" (ngSubmit)="onSubmit(newFormGroup.value)" class="blog-form">
+    <div class="container-fluid p-4" style="width: 60vw;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="m-0 text-primary">{{ service.blog.id == 0 ? 'Thêm bài viết mới' : 'Cập nhật bài viết' }}</h2>
+            <button class="btn-dialog-close" mat-icon-button type="button" (click)="cancel()" tabIndex="-1">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+        <mat-divider class="mb-4"></mat-divider>
+
+        <!-- Loading spinner -->
+        <div *ngIf="isLoading" class="loading-overlay">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
+
+        <div class="form-content" [class.blurred]="isLoading">
+            <div class="form-group mb-4">
+                <mat-form-field appearance="outline" style="width: 100%">
+                    <mat-label>Tiêu đề</mat-label>
+                    <input matInput formControlName="TieuDe" required>
+                    <mat-error *ngIf="newFormGroup.get('TieuDe').hasError('required')">Tiêu đề không được để trống</mat-error>
+                    <mat-error *ngIf="newFormGroup.get('TieuDe').hasError('minlength')">Tiêu đề phải có ít nhất 2 ký tự</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="d-block mb-2">Nội dung</label>
+                <div class="editor-wrapper">
+                    <ckeditor formControlName="NoiDung" [editor]="Editor" [config]="editorConfig" required></ckeditor>
+                </div>
+                <div class="text-danger" *ngIf="newFormGroup.get('NoiDung').touched && newFormGroup.get('NoiDung').hasError('required')">
+                    Nội dung không được để trống
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="d-block mb-2">Hình ảnh bài viết</label>
+                
+                <!-- Existing image -->
+                <div *ngIf="existingImage" class="existing-image-container mb-3">
+                    <div class="current-image-label">Hình ảnh hiện tại:</div>
+                    <div class="image-preview-card existing-image">
+                        <img [src]="getImageUrl(existingImage)" class="img-fluid rounded">
+                        <button type="button" mat-mini-fab color="warn" class="remove-image-btn" (click)="removeExistingImage()">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upload new image -->
+                <div class="custom-file-upload mb-3">
+                    <button type="button" mat-stroked-button color="primary" (click)="fileInput.click()">
+                        <mat-icon>cloud_upload</mat-icon> {{ existingImage ? 'Thay đổi ảnh' : 'Chọn ảnh' }}
+                    </button>
+                    <input #fileInput style="display: none" type="file" accept="image/*" (change)="gopHam($event)" [required]="!existingImage">
+                    <span class="ml-2" *ngIf="urls.length > 0">{{ urls.length }} ảnh đã chọn</span>
+                </div>
+                
+                <!-- Preview new images -->
+                <div class="image-preview-container mt-3" *ngIf="urls.length > 0">
+                    <div class="row">
+                        <div class="col-md-3 mb-3" *ngFor="let url of urls; let i = index">
+                            <div class="image-preview-card">
+                                <img [src]="url" class="img-fluid rounded">
+                                <button type="button" mat-mini-fab color="warn" class="remove-image-btn" (click)="removeImage(i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-danger" *ngIf="newFormGroup.get('Hinh').errors?.required && (newFormGroup.get('Hinh').touched || newFormGroup.invalid)">
+                    Vui lòng chọn ít nhất một hình ảnh
+                </div>
+            </div>
+
+            <mat-divider class="mb-4"></mat-divider>
+
+            <div class="d-flex justify-content-end">
+                <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">Hủy</button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="newFormGroup.invalid || isLoading">
+                    <mat-icon>save</mat-icon>
+                    {{ service.blog.id == 0 ? 'Thêm bài viết' : 'Cập nhật' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+.blog-form {
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+}
+.editor-wrapper {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.image-preview-card {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.remove-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    transform: scale(0.7);
+}
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 10;
+}
+.blurred {
+    filter: blur(2px);
+}
+.existing-image-container {
+    display: flex;
+    flex-direction: column;
+}
+.current-image-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #3f51b5;
+}
+.existing-image {
+    width: 160px;
+    height: 160px;
+}
+.existing-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>

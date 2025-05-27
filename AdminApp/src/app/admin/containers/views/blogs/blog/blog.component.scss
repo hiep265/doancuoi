@@ -1,0 +1,195 @@
+/* Custom styles for blog form component */
+
+/* Form container */
+.blog-form {
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+/* CKEditor container - improved UI */
+.editor-wrapper {
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+    border: 1px solid #d0d0d0;
+}
+
+::ng-deep .ck-editor__editable {
+    min-height: 250px !important;
+    max-height: 400px;
+    padding: 1rem !important;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 15px !important;
+    color: #333 !important;
+    line-height: 1.6 !important;
+}
+
+::ng-deep .ck.ck-editor__main > .ck-editor__editable {
+    background-color: #fff;
+}
+
+::ng-deep .ck.ck-toolbar {
+    border-radius: 4px 4px 0 0;
+    background-color: #f8f9fb !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 8px !important;
+}
+
+::ng-deep .ck.ck-toolbar__separator {
+    background-color: #e2e8f0 !important;
+}
+
+::ng-deep .ck-content h1, 
+::ng-deep .ck-content h2, 
+::ng-deep .ck-content h3, 
+::ng-deep .ck-content h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+::ng-deep .ck-content h1 { font-size: 2rem; }
+::ng-deep .ck-content h2 { font-size: 1.75rem; }
+::ng-deep .ck-content h3 { font-size: 1.5rem; }
+::ng-deep .ck-content h4 { font-size: 1.25rem; }
+
+::ng-deep .ck-content p {
+    margin-bottom: 1rem;
+}
+
+::ng-deep .ck-content blockquote {
+    border-left: 4px solid #6b46c1;
+    padding-left: 1rem;
+    color: #4a5568;
+    font-style: italic;
+    margin: 1rem 0;
+}
+
+::ng-deep .ck-content ul, 
+::ng-deep .ck-content ol {
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+::ng-deep .ck-content a {
+    color: #3182ce;
+    text-decoration: none;
+}
+
+::ng-deep .ck-content a:hover {
+    text-decoration: underline;
+}
+
+::ng-deep .ck-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+::ng-deep .ck-content table td, 
+::ng-deep .ck-content table th {
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+}
+
+::ng-deep .ck-content table th {
+    background-color: #f7fafc;
+    font-weight: 600;
+}
+
+::ng-deep .ck.ck-editor__editable {
+    border-radius: 0 0 4px 4px;
+}
+
+/* Image preview */
+.image-preview-container {
+    margin-top: 15px;
+}
+
+.image-preview-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 160px;
+}
+
+.image-preview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.image-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    transform: scale(0.8);
+    opacity: 0.9;
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 
+                0 6px 10px 0 rgba(0,0,0,.14), 
+                0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.remove-image-btn:hover {
+    opacity: 1;
+    transform: scale(0.9);
+}
+
+/* Material form fields */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #673ab7;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #673ab7;
+}
+
+/* Error messages */
+.text-danger {
+    color: #f44336;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* File upload button */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container-fluid {
+        width: 100% !important;
+        padding: 10px !important;
+    }
+    
+    .image-preview-card {
+        height: 120px;
+    }
+    
+    ::ng-deep .ck-editor__editable {
+        min-height: 200px !important;
+    }
+}

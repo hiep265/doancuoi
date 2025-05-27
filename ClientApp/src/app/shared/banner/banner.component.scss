@@ -1,0 +1,37 @@
+.wrap-pic-w {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 300px; /* Fixed height for all banners */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio */
+    object-position: center; /* Center the image */
+    transition: transform 0.5s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+}
+
+/* Ensure all banner columns have equal width/height */
+.col-md-6.col-xl-4.p-b-30.m-lr-auto {
+  display: flex;
+  
+  .block1 {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Add space between banners on mobile */
+@media (max-width: 767px) {
+  .col-md-6.col-xl-4.p-b-30.m-lr-auto {
+    margin-bottom: 20px;
+  }
+}

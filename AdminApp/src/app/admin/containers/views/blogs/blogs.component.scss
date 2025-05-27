@@ -1,0 +1,97 @@
+/* Custom styles for blogs component */
+.make-gold {
+    background-color: #212529;
+    color: white;
+    font-weight: bold;
+}
+
+.mat-elevation-z8 {
+    box-shadow: 0 5px 8px -5px rgba(0,0,0,.2), 
+                0 8px 10px 1px rgba(0,0,0,.14), 
+                0 3px 14px 2px rgba(0,0,0,.12);
+}
+
+/* Styling for the add button */
+button[mat-button] {
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+button[mat-button]:hover {
+    background-color: rgba(103, 58, 183, 0.1);
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 20px;
+}
+
+th.mat-header-cell {
+    padding: 12px 16px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+td.mat-cell {
+    padding: 12px 16px;
+    vertical-align: middle;
+}
+
+tr.mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Content preview styling */
+.content-cell {
+    max-width: 300px;
+}
+
+.content-preview {
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.view-more-btn {
+    font-size: 12px;
+    line-height: 24px;
+    min-height: 24px;
+    padding: 0 8px;
+}
+
+/* Style for action buttons */
+button[mat-icon-button] {
+    margin: 0 4px;
+    transition: transform 0.2s;
+}
+
+button[mat-icon-button]:hover {
+    transform: scale(1.1);
+}
+
+/* Blog dialog styles */
+::ng-deep .blog-dialog .mat-dialog-container {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* Make the search box prettier */
+mat-form-field {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mat-column-hinh, .mat-column-noidung {
+        display: none;
+    }
+}

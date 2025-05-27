@@ -1,0 +1,101 @@
+<!-- Title page -->
+<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('assets/images/bg-02.jpg');">
+    <h2 class="ltext-105 cl0 txt-center" *ngIf="blogDetail">
+        {{blogDetail.tieude}}
+    </h2>
+</section>
+
+<!-- Content page -->
+<section class="bg0 p-t-75 p-b-120" *ngIf="blogDetail">
+    <div class="container">
+        <div class="row p-b-148">
+            <div class="col-md-10 mx-auto">
+                <div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
+                    <h3 class="mtext-111 cl2 p-b-16">
+                        {{blogDetail.tieude}}
+                    </h3>
+                    <div class="stext-107 flex-w p-b-14">
+                        <span class="m-r-3">
+                            <span class="cl4">
+                                Tác giả:
+                            </span>
+                            <span class="cl5">
+                                {{blogDetail.tacGia || 'Admin'}}
+                            </span>
+                        </span>
+                        <span>
+                            <span class="cl4">
+                                Ngày đăng:
+                            </span>
+                            <span class="cl5">
+                                {{blogDetail.ngayDang | date:'dd/MM/yyyy'}}
+                            </span>
+                        </span>
+                    </div>
+
+                    <!-- Option 1: Standard text content -->
+                    <div *ngIf="!blogDetail.processedContent">
+                        <p class="stext-113 cl6 p-b-26">
+                            {{blogDetail.noidung}}
+                        </p>
+                    </div>
+                    
+                    <!-- Option 2: HTML-processed content -->
+                    <div *ngIf="blogDetail.processedContent" class="stext-113 cl6 p-b-26">
+                        <div [innerHTML]="blogDetail.processedContent"></div>
+                    </div>
+
+                    <!-- Display image if there's a specific image for the blog -->
+                    <div class="p-b-26" *ngIf="blogDetail.image">
+                        <!-- Direct image from API with fallback handling -->
+                        <img 
+                            [src]="blogDetail.imageUrl || 'assets/images/blog-01.jpg'" 
+                            alt="{{blogDetail.tieude}}" 
+                            class="img-fluid blog-detail-img" 
+                            (error)="handleImageError($event)"
+                        >
+                    </div>
+
+                    <!-- Debug image info -->
+                    <div class="debug-info small text-muted mb-3" *ngIf="false">
+                        <p>Image debug info:</p>
+                        <p>Image path: {{blogDetail.image}}</p>
+                        <p>Image URL: {{blogDetail.imageUrl}}</p>
+                    </div>
+
+                    <p class="stext-113 cl6 p-b-26" *ngIf="blogDetail.moTa">
+                        {{blogDetail.moTa}}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <div class="p-t-40">
+                    <h5 class="mtext-113 cl2 p-b-12">
+                        Bình luận
+                    </h5>
+
+                    <form>
+                        <div class="bor19 m-b-20">
+                            <textarea class="stext-111 cl2 plh3 size-124 p-lr-18 p-tb-15" name="comment" placeholder="Viết bình luận của bạn..."></textarea>
+                        </div>
+
+                        <button class="flex-c-m stext-101 cl0 size-125 bg3 bor2 hov-btn3 p-lr-15 trans-04">
+                            Gửi bình luận
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loading state -->
+<div class="container text-center p-t-75 p-b-120" *ngIf="!blogDetail">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <p class="mt-3">Đang tải thông tin bài viết...</p>
+</div>

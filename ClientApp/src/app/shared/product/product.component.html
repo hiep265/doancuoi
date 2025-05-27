@@ -1,0 +1,289 @@
+<section class="bg0 p-t-50 p-b-30">
+    <div class="container">
+        <div class="p-b-20">
+            <h3 class="ltext-103 cl5 text-center">
+                SẢN PHẨM MỚI
+            </h3>
+            <div class="section-divider mx-auto mb-4"></div>
+        </div>
+        <p-carousel [value]="products" styleClass="custom-carousel" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
+            <ng-template let-product pTemplate="item">
+                <div class="product-card mx-2">
+                    <div class="block2">
+                        <div class="block2-pic hov-img0 position-relative">
+                            <img 
+                                [src]="product.image ? 'https://localhost:5001/Images/list-image-product/' + product.image : 'assets/images/product-01.jpg'" 
+                                class="product-img" 
+                                alt="IMG-PRODUCT"
+                                appImgFallback="assets/images/product-01.jpg"
+                            >
+                            <div class="product-actions">
+                                <a [routerLink]="'/product/'+product.id" class="quick-view-btn">
+                                    <i class="zmdi zmdi-eye"></i>
+                                </a>
+                                <!-- <a href="#" class="add-to-cart-btn">
+                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                </a> -->
+                            </div>
+                        </div>
+                        <div class="block2-txt p-t-14">
+                            <a [routerLink]="'/product/'+product.id" class="product-name">
+                                {{product.ten}}
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="product-price">
+                                    {{product.giaBan|number}} VNĐ
+                                </span>
+                                <div class="wishlist-btn">
+                                    <a *ngIf="product.like==null" (click)="like(product.id)" class="btn-addwish-b2">
+                                        <img class="icon-heart1" src="../../../assets/images/icons/icon-heart-01.png" alt="ICON">
+                                    </a>
+                                    <a *ngIf="product.like==1" (click)="like(product.id)" class="btn-addwish-b2">
+                                        <img class="icon-heart1" src="../../../assets/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-carousel>
+    </div>
+</section>
+
+<section class="bg0 p-t-50 p-b-140">
+    <div class="container">
+        <div class="p-b-20">
+            <h3 class="ltext-103 cl5 text-center">
+                DANH SÁCH SẢN PHẨM
+            </h3>
+            <div class="section-divider mx-auto mb-4"></div>
+        </div>
+        <div class="flex-w flex-sb-m p-b-52">
+            <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+                <button class="filter-btn how-active1" data-filter="*">
+                    Tất cả sản phẩm
+                </button>
+                <button class="filter-btn" data-filter=".women">
+                   Nữ
+                </button>
+                <button class="filter-btn" data-filter=".men">
+                    Nam 
+                </button>
+            </div>
+            <div class="flex-w flex-c-m m-tb-10">
+                <div class="search-filter-btn m-r-8 js-show-filter">
+                    <i class="icon-filter cl2 m-r-6 fs-15 zmdi zmdi-filter-list"></i>
+                    <i class="icon-close-filter cl2 m-r-6 fs-15 zmdi zmdi-close dis-none"></i> Bộ lọc
+                </div>
+                <div class="search-filter-btn js-show-search">
+                    <i class="icon-search cl2 m-r-6 fs-15 zmdi zmdi-search"></i>
+                    <i class="icon-close-search cl2 m-r-6 fs-15 zmdi zmdi-close dis-none"></i> Tìm kiếm
+                </div>
+            </div>
+            
+            <!-- Search product -->
+            <div class="dis-none panel-search w-full p-t-10 p-b-15">
+                <div class="bor8 dis-flex p-l-15">
+                    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" [(ngModel)]="searchText" autocomplete="off" name="search-product" placeholder="Tìm kiếm sản phẩm...">
+                </div>
+            </div>
+            
+            <!-- Filter -->
+            <div class="dis-none panel-filter w-full p-t-10">
+                <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+                    <div class="filter-col2 p-r-15 p-b-27">
+                        <div class="mtext-102 cl2 p-b-15 filter-section-title">
+                            Giá
+                        </div>
+                        <ul class="filter-list">
+                            <li class="p-b-6">
+                                <button (click)="searchTheoGia(0,999999999,1)" [ngClass]="{'filter-active': chose_gia==1}" class="filter-option">
+                                    Tất cả
+                                </button>
+                            </li>
+                            <li class="p-b-6">
+                                <button (click)="searchTheoGia(100000,300000,2)" [ngClass]="{'filter-active': chose_gia==2}" class="filter-option">
+                                    {{100000|number}} - {{300000|number}} VNĐ
+                                </button>
+                            </li>
+                            <li class="p-b-6">
+                                <button (click)="searchTheoGia(300000,400000,3)" [ngClass]="{'filter-active': chose_gia==3}" class="filter-option">
+                                    {{300000|number}} - {{400000|number}} VNĐ
+                                </button>
+                            </li>
+                            <li class="p-b-6">
+                                <button (click)="searchTheoGia(400000,500000,4)" [ngClass]="{'filter-active': chose_gia==4}" class="filter-option">
+                                    {{400000|number}} - {{500000|number}} VNĐ
+                                </button>
+                            </li>
+                            <li class="p-b-6">
+                                <button (click)="searchTheoGia(500000,999999999,5)" [ngClass]="{'filter-active': chose_gia==5}" class="filter-option">
+                                    {{500000|number}} +
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="filter-col3 p-r-15 p-b-27">
+                        <div class="mtext-102 cl2 p-b-15 filter-section-title">
+                            Màu
+                        </div>
+                        <ul class="filter-list">
+                            <li class="p-b-6 d-flex align-items-center">
+                                <span class="color-circle mr-2" style="background-color: #222;"></span>
+                                <button (click)="searchthemau('Đen',1)" [ngClass]="{'filter-active': chose_mau==1}" class="filter-option">
+                                    Đen
+                                </button>
+                            </li>
+                            <li class="p-b-6 d-flex align-items-center">
+                                <span class="color-circle mr-2" style="background-color: #fdfdfd; border: 1px solid #ddd"></span>
+                                <button (click)="searchthemau('Trắng',2)" [ngClass]="{'filter-active': chose_mau==2}" class="filter-option">
+                                    Trắng
+                                </button>
+                            </li>
+                            <li class="p-b-6 d-flex align-items-center">
+                                <span class="color-circle mr-2" style="background-color: #F9D342;"></span>
+                                <button (click)="searchthemau('Vàng',3)" [ngClass]="{'filter-active': chose_mau==3}" class="filter-option">
+                                    Vàng
+                                </button>
+                            </li>
+                            <li class="p-b-6 d-flex align-items-center">
+                                <span class="color-circle mr-2" style="background-color: #8A2BE2;"></span>
+                                <button (click)="searchthemau('Tím',4)" [ngClass]="{'filter-active': chose_mau==4}" class="filter-option">
+                                    Tím
+                                </button>
+                            </li>
+                            <li class="p-b-6 d-flex align-items-center">
+                                <span class="color-circle mr-2" style="background-color: #fa4251;"></span>
+                                <button (click)="searchthemau('Đỏ',5)" [ngClass]="{'filter-active': chose_mau==5}" class="filter-option">
+                                    Đỏ
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row isotope-grid">
+            <div *ngFor="let item of list_product_female | appFilter: searchText | slice:(currentPage-1)*itemsPerPage:currentPage*itemsPerPage" 
+                 appHighlight [searchedWord]="searchText" [content]="c" [classToApply]="'font-weight-bold'" [setTitle]="'true'" 
+                 class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                <!-- Product Card -->
+                <div class="product-card">
+                    <div class="block2">
+                        <div class="block2-pic hov-img0 position-relative">
+                            <img 
+                                [src]="item.image ? 'https://localhost:5001/Images/list-image-product/' + item.image : 'assets/images/product-01.jpg'" 
+                                class="product-img" 
+                                alt="IMG-PRODUCT"
+                                appImgFallback="assets/images/product-01.jpg"
+                            >
+                            <div class="product-actions">
+                                <a [routerLink]="'/product/'+item.id" class="quick-view-btn">
+                                    <i class="zmdi zmdi-eye"></i>
+                                </a>
+                                <!-- <a href="#" class="add-to-cart-btn">
+                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                </a> -->
+                            </div>
+                        </div>
+                        <div class="block2-txt p-t-14">
+                            <a [routerLink]="'/product/'+item.id" class="product-name">
+                                {{item.ten}}
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="product-price">
+                                    {{item.giaBan|number}} VNĐ
+                                </span>
+                                <div class="wishlist-btn">
+                                    <a *ngIf="item.like==null" (click)="like(item.id)" class="btn-addwish-b2">
+                                        <img class="icon-heart1" src="../../../assets/images/icons/icon-heart-01.png" alt="ICON">
+                                    </a>
+                                    <a *ngIf="item.like==1" (click)="like(item.id)" class="btn-addwish-b2">
+                                        <img class="icon-heart1" src="../../../assets/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div *ngFor="let item of list_product_male | appFilter: searchText | slice:(currentPage-1)*itemsPerPage:currentPage*itemsPerPage" 
+                 appHighlight [searchedWord]="searchText" [content]="c" [classToApply]="'font-weight-bold'" [setTitle]="'true'" 
+                 class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item men">
+                <!-- Product Card -->
+                <div class="product-card">
+                    <div class="block2">
+                        <div class="block2-pic hov-img0 position-relative">
+                            <img 
+                                [src]="item.image ? 'https://localhost:5001/Images/list-image-product/' + item.image : 'assets/images/product-01.jpg'" 
+                                class="product-img" 
+                                alt="IMG-PRODUCT"
+                                appImgFallback="assets/images/product-01.jpg"
+                            >
+                            <div class="product-actions">
+                                <a [routerLink]="'/product/'+item.id" class="quick-view-btn">
+                                    <i class="zmdi zmdi-eye"></i>
+                                </a>
+                                <!-- <a href="#" class="add-to-cart-btn">
+                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                </a> -->
+                            </div>
+                        </div>
+                        <div class="block2-txt p-t-14">
+                            <a [routerLink]="'/product/'+item.id" class="product-name">
+                                {{item.ten}}
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="product-price">
+                                    {{item.giaBan|number}} VNĐ
+                                </span>
+                                <div class="wishlist-btn">
+                                    <a *ngIf="item.like==null" (click)="like(item.id)" class="btn-addwish-b2">
+                                        <img class="icon-heart1" src="../../../assets/images/icons/icon-heart-01.png" alt="ICON">
+                                    </a>
+                                    <a *ngIf="item.like==1" (click)="like(item.id)" class="btn-addwish-b2">
+                                        <img class="icon-heart1" src="../../../assets/images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-2" *ngIf="totalPages > 1">
+            <nav aria-label="Product pagination">
+                <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                        <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    
+                    <ng-container *ngFor="let page of getPageNumbers()">
+                        <li class="page-item" *ngIf="page !== null" [ngClass]="{'active': page === currentPage}">
+                            <a class="page-link" href="javascript:void(0)" (click)="changePage(page)">{{ page }}</a>
+                        </li>
+                        <li class="page-item disabled" *ngIf="page === null">
+                            <span class="page-link">...</span>
+                        </li>
+                    </ng-container>
+                    
+                    <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+                        <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,159 @@
+/* Title section styles */
+.bg-img1 {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .ltext-105 {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* Content section styles */
+.mtext-111 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.stext-107 {
+  display: flex;
+  flex-wrap: wrap;
+  color: #888;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  
+  .m-r-3 {
+    margin-right: 1.5rem;
+  }
+  
+  .cl4 {
+    color: #666;
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+  
+  .cl5 {
+    color: #6c7ae0;
+  }
+}
+
+.stext-113 {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+/* Blog image styles */
+.img-fluid {
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin: 1.5rem 0;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Enhanced blog detail image styles */
+.blog-detail-img {
+  display: block;
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  
+  /* Fix for image aspect ratio */
+  &.img-fluid {
+    width: auto;
+    max-height: 500px;
+  }
+}
+
+/* Debug info styling */
+.debug-info {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: monospace;
+  
+  p {
+    margin-bottom: 0.25rem;
+  }
+}
+
+/* Comments section styles */
+.bor19 {
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: none;
+  border: none;
+  outline: none;
+  
+  &:focus {
+    border: none;
+  }
+}
+
+.flex-c-m {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg3 {
+  background-color: #6c7ae0;
+  &:hover {
+    background-color: #5c68c1;
+  }
+}
+
+.hov-btn3 {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 122, 224, 0.3);
+  }
+}
+
+/* Loading spinner styles */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #6c7ae0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .p-r-85, .p-r-15-lg, .p-r-0-md {
+    padding-right: 15px !important;
+  }
+  
+  .mtext-111 {
+    font-size: 1.5rem;
+  }
+  
+  .blog-detail-img {
+    max-height: 300px;
+  }
+}
