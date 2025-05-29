@@ -44,6 +44,7 @@ import { GoogleLoginProvider } from "angularx-social-login";
 import { environment } from 'src/environments/environment';
 import { ChatWidgetComponent } from './components/chat-widget/chat-widget.component';
 import { SharedModule } from './shared/shared.module';
+import { MarkdownModule } from 'ngx-markdown';
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +90,8 @@ import { SharedModule } from './shared/shared.module';
     NgxPaginationModule,
     BrowserAnimationsModule,
     BrowserModule, FormsModule, SocialLoginModule,
-    SharedModule
+    SharedModule,
+    MarkdownModule.forRoot()
   ],
   providers: [
     UserService,

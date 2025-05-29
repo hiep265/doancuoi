@@ -31,7 +31,6 @@ export class ChartSecondComponent implements OnInit {
   errorMessage: any;
   dataThongKe: any;
   soLanXuatHien: any;
-  doanhthucaonhat: any;
   nam2021soluong: any;
   soLuongTon: any;
   constructor(public service:ChartSecondService,    public dialog: MatDialog,
@@ -179,7 +178,6 @@ export class ChartSecondComponent implements OnInit {
     ]
    }
   ngOnInit(): void {
-    this.getTop10SanPhamLoiNhats()
     this.getSoLanXuatHienTrongDonHang()
     this.getThongKeThang();
     this.getNam2021doanhso();
@@ -201,13 +199,7 @@ export class ChartSecondComponent implements OnInit {
       this.getThongKeThang();
     });
     connection.on("BroadcastMessage", () => {
-      this.getTop10SanPhamLoiNhats()
-    })
-    connection.on("BroadcastMessage", () => {
       this.getTopNhanHieu()
-    })
-    connection.on("BroadcastMessage", () => {
-      this.getNam2021doanhso()
     })
     connection.on("BroadcastMessage", () => {
       this.getNam2021doanhso()
@@ -262,20 +254,6 @@ export class ChartSecondComponent implements OnInit {
     )
   }
   //quantrong
-  ///Quan trong
-  lengthtop: any
-  getTop10SanPhamLoiNhats() {
-    this.service.getSanPhamDoanhThuTop().subscribe(
-      result => {
-        this.doanhthucaonhat = result as any
-        this.lengthtop = this.doanhthucaonhat.length
-        for (var i = 0; i < this.lengthtop; i++) {
-          this.dataSourceDoanhThu.data[i].label = this.doanhthucaonhat[i].tenSP
-          this.dataSourceDoanhThu.data[i].value = this.doanhthucaonhat[i].doanhSoCaoNhat
-        }
-      }
-    )
-  }
   ///Quan trong
   getSoLuongTrongNam() {
     this.service.getNam2021SoLuong().subscribe(

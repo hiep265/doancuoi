@@ -41,7 +41,7 @@ export class TaoPhieuNhapService {
     return this.http.post(environment.URL_API+"TaoPhieuNhaps",data)
   }
   delete(id:number){
-    return this.http.delete(`${environment.URL_API}/${id}`)
+    return this.http.delete(`${environment.URL_API}TaoPhieuNhaps/${id}`)
   }
   getAllPhieuNhaps(){
     this.getphieunhaphttp().subscribe(

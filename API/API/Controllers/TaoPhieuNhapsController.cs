@@ -166,5 +166,23 @@ namespace API.Controllers
                      });
             return await kb.FirstOrDefaultAsync(s=>s.Id==id);
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhieuNhap(int id)
+        {
+            var phieuNhap = await _context.PhieuNhapHangs.FindAsync(id);
+            if (phieuNhap == null)
+            {
+                return NotFound();
+            }
+
+            // Xóa các chi tiết phiếu nhập liên quan (nếu có)
+            var chiTietList = _context.ChiTietPhieuNhapHangs.Where(c => c.Id_PhieuNhapHang == id);
+            _context.ChiTietPhieuNhapHangs.RemoveRange(chiTietList);
+
+            _context.PhieuNhapHangs.Remove(phieuNhap);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
