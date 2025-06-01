@@ -16,20 +16,15 @@
     </div>
     
     <div class="chat-body">
-      <!-- Thông báo khi chưa đăng nhập -->
-      <div *ngIf="!isLoggedIn && messages.length === 0" class="login-notice">
-        <p>xin chào bạn cần tìm kiếm sản phẩm gì?</p>
+      <!-- Thông báo chào mừng -->
+      <div *ngIf="messages.length === 0" class="login-notice">
+        <p>{{welcomeMessage}}</p>
       </div>
       
       <div class="messages-container" #scrollContainer>
         <div *ngFor="let message of messages" class="message" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
           <div class="message-content">
-            <ng-container *ngIf="message.content && message.content.trim().length > 0; else noContent">
-              <markdown [data]="message.content"></markdown>
-            </ng-container>
-            <ng-template #noContent>
-              <span class="text-danger">(Không có nội dung để hiển thị)</span>
-            </ng-template>
+            <markdown [data]="message.content"></markdown>
           </div>
           <div class="message-time" *ngIf="message.timestamp">
             {{ message.timestamp | date:'shortTime' }}
@@ -37,7 +32,7 @@
         </div>
         <div *ngIf="isLoading" class="loading-spinner">
           <div class="spinner"></div>
-          <span>Đang lấy phản hồi...</span>
+          <span>{{loadingMessage}}</span>
         </div>
       </div>
     </div>
@@ -48,7 +43,7 @@
           type="text" 
           [(ngModel)]="newMessage" 
           name="message" 
-          placeholder="Nhập tin nhắn..."
+          [placeholder]="inputPlaceholder"
           [disabled]="isLoading"
           required
           autocomplete="off">

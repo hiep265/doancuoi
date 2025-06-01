@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
-import { ChatMessage } from '../../model/chat.model';
+import { ChatMessage, WebhookResponseType, ArrayResponseItem } from '../../model/chat.model';
 import { of } from 'rxjs';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
+import { catchError, finalize, switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-widget',
@@ -18,46 +18,25 @@ export class ChatWidgetComponent implements OnInit, AfterViewChecked {
   isLoading = false;
   isLoggedIn = false;
   currentUserId: number | null = null;
+  welcomeMessage = 'Xin chào bạn cần tìm kiếm sản phẩm gì?';
+  errorMessage = 'Đã xảy ra lỗi khi gửi tin nhắn. Vui lòng thử lại sau.';
+  invalidResponseMessage = 'Không nhận được phản hồi hợp lệ.';
+  loadingMessage = 'Đang lấy phản hồi...';
+  emptyContentMessage = '(Không có nội dung để hiển thị)';
+  inputPlaceholder = 'Nhập tin nhắn...';
   
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
-    // Kiểm tra trạng thái đăng nhập
-    this.isLoggedIn = this.chatService.isUserLoggedIn();
-    this.currentUserId = this.chatService.getCurrentUserId();
-    
-    // Chỉ tải lịch sử chat khi đã đăng nhập
-    if (this.isLoggedIn) {
-      this.loadChatHistory();
-    }
-    
-    // Nếu cần, có thể theo dõi sự thay đổi của trạng thái đăng nhập ở đây
+    // Khởi tạo trạng thái mặc định
+    this.isLoggedIn = false;
+    this.currentUserId = null;
   }
   
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
-  
-  loadChatHistory(): void {
-    this.chatService.getChats().subscribe(
-      (chats) => {
-        if (chats && chats.length > 0) {
-          this.messages = chats.map(chat => ({
-            content: chat.ContentChat,
-            isUser: chat.IdUser !== 0, // Giả sử 0 là ID của bot
-            timestamp: new Date(chat.TimeChat)
-          }));
-          
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 100);
-        }
-      },
-      (error) => {
-        console.error('Error loading chat history:', error);
-      }
-    );
-  }
+  // Không còn sử dụng loadChatHistory vì chỉ gọi trực tiếp webhook
 
   toggleChat(): void {
     this.isMinimized = !this.isMinimized;
@@ -78,7 +57,7 @@ export class ChatWidgetComponent implements OnInit, AfterViewChecked {
     this.newMessage = '';
     this.isLoading = true;
     
-    // Thêm tin nhắn người dùng vào giao diện (luôn hiển thị bất kể đăng nhập hay chưa)
+    // Thêm tin nhắn người dùng vào giao diện
     const userMessage: ChatMessage = {
       content: messageText,
       isUser: true,
@@ -86,34 +65,81 @@ export class ChatWidgetComponent implements OnInit, AfterViewChecked {
     };
     this.messages.push(userMessage);
     
-    // Lưu tin nhắn người dùng vào database (chỉ khi đã đăng nhập)
-    const saveUserMsg$ = this.isLoggedIn && this.currentUserId 
-      ? this.chatService.saveUserMessage(this.currentUserId, messageText)
-      : of(null);
-    
-    saveUserMsg$.pipe(
-      // Luôn gửi đến webhook bất kể đăng nhập hay chưa
-      switchMap(() => {
-        return this.chatService.sendToWebhook(messageText);
-      }),
+    // Gửi trực tiếp đến webhook
+    this.chatService.sendToWebhook(messageText).pipe(
+      
       catchError(error => {
         console.error('Error sending to webhook:', error);
-        return of({ message: 'Đã xảy ra lỗi khi gửi tin nhắn. Vui lòng thử lại sau.' });
+        return of({ message: this.errorMessage });
       }),
+      
       // Xử lý phản hồi từ webhook
-      switchMap(response => {
-        // Thêm phản hồi vào giao diện (luôn hiển thị)
+      map(response => {
+        // Debug: in ra toàn bộ dữ liệu trả về từ webhook
+        console.log('WEBHOOK RESPONSE:', JSON.stringify(response));
+       
+        // Lấy nội dung trực tiếp từ phản hồi webhook
+        let messageContent = '';
+        
+        // Lấy trực tiếp dữ liệu từ mảng nếu là mảng
+        if (Array.isArray(response) && response.length > 0) {
+          // Lấy giá trị output từ phần tử đầu tiên của mảng
+          const firstItem = response[0] as any;
+          console.log('FIRST ITEM:', firstItem);
+          
+          // Kiểm tra nếu có trường output
+          if (firstItem && typeof firstItem === 'object') {
+            if (firstItem.output) {
+              messageContent = firstItem.output;
+              console.log('USING OUTPUT:', messageContent);
+            } else {
+              // Nếu không có trường output, thử lấy toàn bộ phần tử nếu nó là chuỗi
+              messageContent = typeof firstItem === 'string' ? firstItem : JSON.stringify(firstItem);
+              console.log('USING STRINGIFIED ITEM:', messageContent);
+            }
+          } else {
+            messageContent = String(firstItem);
+            console.log('USING STRING CONVERSION:', messageContent);
+          }
+        } 
+        // Nếu không phải mảng thì gán trực tiếp
+        else {
+          // Các trường hợp còn lại, gán trực tiếp giá trị
+          const resp = response as any;
+          console.log('NON-ARRAY RESPONSE:', resp);
+          
+          if (resp && typeof resp === 'object') {
+            if (resp.output) {
+              messageContent = resp.output;
+              console.log('USING OBJECT OUTPUT:', messageContent);
+            } else if (resp.message) {
+              messageContent = resp.message;
+              console.log('USING OBJECT MESSAGE:', messageContent);
+            } else {
+              // Thử chuyển thành chuỗi
+              messageContent = JSON.stringify(resp);
+              console.log('USING STRINGIFIED OBJECT:', messageContent);
+            }
+          } else if (typeof resp === 'string') {
+            // Nếu là chuỗi, sử dụng trực tiếp
+            messageContent = resp;
+            console.log('USING STRING DIRECTLY:', messageContent);
+          } else {
+            messageContent = String(resp) || this.invalidResponseMessage;
+            console.log('USING STRING CONVERSION OR DEFAULT:', messageContent);
+          }
+        }
+        
+        // Thêm phản hồi vào giao diện
         const botMessage: ChatMessage = {
-          content: response.message,
+          content: messageContent,
           isUser: false,
           timestamp: new Date()
         };
         this.messages.push(botMessage);
         
-        // Lưu phản hồi vào database (chỉ khi đã đăng nhập)
-        return this.isLoggedIn 
-          ? this.chatService.saveBotMessage(response.message)
-          : of(null);
+        // Trả về giá trị để tiếp tục chuỗi observable
+        return messageContent;
       }),
       finalize(() => {
         this.isLoading = false;

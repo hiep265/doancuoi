@@ -13,4 +13,11 @@ export interface ApiChatRequest {
 export interface WebhookResponse {
   message?: string;
   output?: string;
-} 
+}
+
+export interface ArrayResponseItem {
+  output?: string;
+}
+
+// Union type cho tất cả các loại phản hồi có thể nhận được
+export type WebhookResponseType = WebhookResponse | ArrayResponseItem[] | { message: string; };

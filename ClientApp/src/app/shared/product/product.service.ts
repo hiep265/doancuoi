@@ -14,4 +14,8 @@ export class ProductService {
     return this.http.get<any>(environment.URL_API+"sanphams/topsanphammoi")
   }
   public trangthaiDataProduct:boolean
+  
+  getProductsByPriceRange(maxPrice: number): Observable<any> {
+    return this.http.get<any>(`${environment.URL_API}sanphams/byprice?maxPrice=${maxPrice}`)
+  }
 }
